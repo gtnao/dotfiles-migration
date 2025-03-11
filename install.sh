@@ -17,6 +17,6 @@ if command -v zsh >/dev/null 2>&1; then
 	username="$(id -un)"
 	zshpath="$(command -v zsh)"
 	echo "Changing login shell for ${username} to ${zshpath}"
-	sudo chsh -s "${username}" -s "${zshpath}"
+	sudo chsh "${username}" -s "${zshpath}"
 fi
 exec zsh -l
