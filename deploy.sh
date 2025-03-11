@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -eu
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+mkdir -p "${HOME}/.config"
+ln -sfn "${SCRIPT_DIR}/.config/nvim" "${HOME}/.config/nvim"
+ln -sfn "${SCRIPT_DIR}/.config/zsh" "${HOME}/.config/zsh"
+ln -sfn "${SCRIPT_DIR}/.config/zsh/.zshenv" "${HOME}/.zshenv"
+ln -sfn "${SCRIPT_DIR}/.config/zsh/.zshrc" "${HOME}/.zshrc"
