@@ -9,7 +9,7 @@ sudo apt -y upgrade
 sudo apt -y install git wget curl zip unzip build-essential
 
 [ ! -d "${DOTFILES_HOME}" ] && mkdir -p "$(dirname "${DOTFILES_HOME}")"
-[ ! -d "${DOTFILES_HOME}/.git" ] && git clone https://github.com/gtnao/dotfiles.git "${DOTFILES_HOME}"
+[ ! -d "${DOTFILES_HOME}/.git" ] && git clone https://github.com/gtnao/dotfiles-migration.git "${DOTFILES_HOME}"
 "${DOTFILES_HOME}/deploy.sh"
 
 sudo apt -y install zsh tmux
