@@ -22,6 +22,10 @@ source "${ZINIT_HOME}/zinit.zsh"
 zinit light zsh-users/zsh-syntax-highlighting
 zinit light zsh-users/zsh-autosuggestions
 
+# prompt
+zinit ice lucid from'gh-r' as'command' atclone'./starship init zsh > init.zsh; ./starship completions zsh > _starship' atpull'%atclone' src'init.zsh'
+zinit light starship/starship
+
 # neovim
 zinit ice wait lucid from'gh-r' as'program' bpick'*tar.gz' pick'nvim*/bin/nvim' atclone'./nvim*/bin/nvim --headless "+Lazy! sync" +qa'
 zinit light neovim/neovim
