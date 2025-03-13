@@ -12,4 +12,14 @@ fi
 [ ! -d "${DOTFILES_HOME}/.git" ] && git clone https://github.com/gtnao/dotfiles-migration.git "${DOTFILES_HOME}"
 "${DOTFILES_HOME}/deploy.sh"
 
+if ! command -v brew &>/dev/null; then
+	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+fi
+if ! grep -q '/opt/homebrew/bin/brew shellenv' "${HOME}/.zprofile"; then
+	echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >>"${HOME}/.zprofile"
+	eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
+
+brew install tmux
+
 exec zsh -l

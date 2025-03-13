@@ -33,3 +33,9 @@ zinit light neovim/neovim
 # asdf
 zinit ice wait lucid from'gh-r' as'program' pick'asdf'
 zinit light asdf-vm/asdf
+
+if command -v tmux >/dev/null 2>&1; then
+  if [ -z "$TMUX" ]; then
+    tmux attach || tmux new-session
+  fi
+fi
