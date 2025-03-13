@@ -34,6 +34,36 @@ zinit light neovim/neovim
 zinit ice wait lucid from'gh-r' as'program' pick'asdf'
 zinit light asdf-vm/asdf
 
+# fzf
+zinit ice wait lucid from'gh-r' as'program' pick'fzf' atclone'./fzf --zsh > shell-integration.zsh' atpull'%atclone' src"shell-integration.zsh"
+zinit light junegunn/fzf
+
+# ghq
+zinit ice wait lucid from'gh-r' as'program' pick'ghq*/ghq'
+zinit light x-motemen/ghq
+
+# enhanced commands
+zinit ice wait lucid from'gh-r' as'program' pick'bat*/bat'
+zinit light sharkdp/bat
+zinit ice wait lucid from'gh-r' as'program' pick'bottom*/btm'
+zinit light ClementTsang/bottom
+zinit ice wait lucid from'gh-r' as'program' pick'delta*/delta'
+zinit light dandavison/delta
+zinit ice wait lucid from'gh-r' as'program' pick'dust*/dust'
+zinit light bootandy/dust
+zinit ice wait lucid from'gh-r' as'program' pick'eza'
+zinit light eza-community/eza
+zinit ice wait lucid from'gh-r' as'program' pick'fd*/fd'
+zinit light sharkdp/fd
+zinit ice wait lucid from'gh-r' as'program' pick'procs'
+zinit light dalance/procs
+zinit ice wait lucid from'gh-r' as'program' pick'ripgrep*/rg'
+zinit light BurntSushi/ripgrep
+zinit ice wait lucid from'gh-r' as'program' mv'tealdeer* -> tldr'
+zinit light tealdeer-rs/tealdeer
+zinit ice wait lucid from'gh-r' as'program' pick'zoxide*/zoxide'
+zinit light ajeetdsouza/zoxide
+
 if command -v tmux >/dev/null 2>&1; then
   if [ -z "$TMUX" ]; then
     tmux attach || tmux new-session
