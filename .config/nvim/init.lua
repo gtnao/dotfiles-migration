@@ -376,7 +376,9 @@ require("lazy").setup({
 				null_ls.setup({
 					sources = {
 						vim.fn.executable("npm") == 1 and null_ls.builtins.formatting.prettier or nil,
-						null_ls.builtins.formatting.shfmt,
+						null_ls.builtins.formatting.shfmt.with({
+							filetypes = { "sh", "zsh" },
+						}),
 						null_ls.builtins.formatting.stylua,
 					},
 					on_attach = function(client, bufnr)
@@ -467,6 +469,7 @@ require("lazy").setup({
 						enable = true,
 					},
 				})
+				vim.treesitter.language.register("bash", "zsh")
 			end,
 		},
 		-- FuzzyFinder
