@@ -272,16 +272,20 @@ require("lazy").setup({
 			config = function()
 				local mason_lspconfig = require("mason-lspconfig")
 				local lspconfig = require("lspconfig")
+				local ensure_installed = {
+					"lua_ls",
+					"rust_analyzer",
+					"terraformls",
+				}
+				if vim.fn.executable("npm") == 1 then
+					table.insert(ensure_installed, "eslint")
+					table.insert(ensure_installed, "ts_ls")
+				end
+				if vim.fn.executable("go") == 1 then
+					table.insert(ensure_installed, "gopls")
+				end
 				mason_lspconfig.setup({
-					ensure_installed = {
-						"clangd",
-						vim.fn.executable("npm") == 1 and "eslint" or nil,
-						vim.fn.executable("go") == 1 and "gopls" or nil,
-						"lua_ls",
-						"rust_analyzer",
-						"terraformls",
-						"ts_ls",
-					},
+					ensure_installed = ensure_installed,
 					automatic_installation = true,
 				})
 				local default_capabilities = require("cmp_nvim_lsp").default_capabilities()
@@ -365,17 +369,20 @@ require("lazy").setup({
 			config = function()
 				local mason_null_ls = require("mason-null-ls")
 				local null_ls = require("null-ls")
+				local ensure_installed = {
+					"shfmt",
+					"stylua",
+				}
+				if vim.fn.executable("npm") == 1 then
+					table.insert(ensure_installed, "prettier")
+				end
 				mason_null_ls.setup({
-					ensure_installed = {
-						vim.fn.executable("npm") == 1 and "prettier" or nil,
-						"shfmt",
-						"stylua",
-					},
+					ensure_installed = ensure_installed,
 					automatic_installation = true,
 				})
 				null_ls.setup({
 					sources = {
-						vim.fn.executable("npm") == 1 and null_ls.builtins.formatting.prettier or nil,
+						null_ls.builtins.formatting.prettier,
 						null_ls.builtins.formatting.shfmt.with({
 							filetypes = { "sh", "zsh" },
 						}),
