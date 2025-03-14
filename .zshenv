@@ -13,3 +13,9 @@ path=(
   $HOME/.asdf/shims(N-/)
   $path
 )
+
+# Rust
+[[ -f "${HOME}/.cargo/env" ]] && . "${HOME}/.cargo/env"
+
+# SDKMAN!
+[[ -f "${HOME}/.sdkman/bin/sdkman-init.sh" ]] && . "${HOME}/.sdkman/bin/sdkman-init.sh"
