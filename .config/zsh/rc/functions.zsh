@@ -29,16 +29,20 @@ function install_python_dependencies() {
 		sudo apt -y install build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev curl git libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
 	fi
 }
-function install_java() {
-	asdf plugin add java
-	asdf install java latest
-	asdf set -u java latest
-}
 function install_rust() {
 	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path
 }
 function install_sdkman() {
 	curl -s 'https://get.sdkman.io?rcupdate=false' | bash
+	source "${HOME}/.sdkman/bin/sdkman-init.sh"
+}
+function install_java() {
+	install_sdkman
+	sdk install java
+}
+function install_gradle() {
+	install_sdkman
+	sdk install gradle
 }
 function install_go() {
 	local os
