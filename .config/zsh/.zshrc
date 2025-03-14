@@ -64,8 +64,8 @@ zinit light tealdeer-rs/tealdeer
 zinit ice wait lucid from'gh-r' as'program' pick'zoxide*/zoxide'
 zinit light ajeetdsouza/zoxide
 
+source "${ZDOTDIR}/rc/functions.zsh"
+
 if command -v tmux >/dev/null 2>&1; then
-  if [ -z "$TMUX" ]; then
-    tmux attach || tmux new-session
-  fi
+	[ -z "$TMUX" ] && (tmux attach || tmux new-session)
 fi
