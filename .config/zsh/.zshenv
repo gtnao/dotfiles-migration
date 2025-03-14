@@ -7,13 +7,6 @@ export XDG_CACHE_HOME="${HOME}/.cache"
 # zsh
 export ZDOTDIR="${XDG_CONFIG_HOME}/zsh"
 
-# path
-typeset -Ugx path
-path=(
-  $HOME/.asdf/shims(N-/)
-  $path
-)
-
 # Rust
 [[ -f "${HOME}/.cargo/env" ]] && . "${HOME}/.cargo/env"
 

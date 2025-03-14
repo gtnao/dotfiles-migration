@@ -1,3 +1,7 @@
+# path
+typeset -Ugx path
+path=($HOME/.asdf/shims(N-/) $path)
+
 HISTFILE=~/.zsh_history
 HISTSIZE=10000
 SAVEHIST=100000
