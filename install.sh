@@ -6,7 +6,7 @@ DOTFILES_HOME="${HOME}/dev/src/github.com/gtnao/dotfiles"
 
 sudo apt update
 sudo apt -y upgrade
-sudo apt -y install git wget curl zip unzip build-essential
+sudo apt -y install git wget curl zip unzip build-essential jq
 
 [ ! -d "${DOTFILES_HOME}" ] && mkdir -p "$(dirname "${DOTFILES_HOME}")"
 [ ! -d "${DOTFILES_HOME}/.git" ] && git clone https://github.com/gtnao/dotfiles-migration.git "${DOTFILES_HOME}"
