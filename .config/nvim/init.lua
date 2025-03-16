@@ -373,21 +373,22 @@ require("lazy").setup({
 					"shfmt",
 					"stylua",
 				}
+				local sources = {
+					null_ls.builtins.formatting.shfmt.with({
+						filetypes = { "sh", "zsh" },
+					}),
+					null_ls.builtins.formatting.stylua,
+				}
 				if vim.fn.executable("npm") == 1 then
 					table.insert(ensure_installed, "prettier")
+					table.insert(sources, null_ls.builtins.formatting.prettier)
 				end
 				mason_null_ls.setup({
 					ensure_installed = ensure_installed,
 					automatic_installation = true,
 				})
 				null_ls.setup({
-					sources = {
-						null_ls.builtins.formatting.prettier,
-						null_ls.builtins.formatting.shfmt.with({
-							filetypes = { "sh", "zsh" },
-						}),
-						null_ls.builtins.formatting.stylua,
-					},
+					sources = sources,
 					on_attach = function(client, bufnr)
 						if client.supports_method("textDocument/formatting") then
 							vim.api.nvim_create_autocmd("BufWritePre", {
@@ -447,19 +448,40 @@ require("lazy").setup({
 					ensure_installed = {
 						"bash",
 						"c",
+						"cmake",
 						"cpp",
+						"css",
+						"dockerfile",
 						"git_config",
 						"gitcommit",
 						"gitignore",
 						"go",
 						"gomod",
+						"graphql",
+						"html",
+						"java",
+						"json",
 						"lua",
+						"make",
 						"markdown",
+						"nginx",
+						"prisma",
+						"proto",
+						"python",
+						"rbs",
 						"ruby",
 						"rust",
+						"slim",
+						"sql",
+						"ssh_config",
+						"starlark",
+						"terraform",
+						"tmux",
 						"toml",
 						"tsx",
 						"typescript",
+						"xml",
+						"yaml",
 					},
 					sync_install = false,
 					highlight = {
