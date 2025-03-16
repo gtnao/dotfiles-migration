@@ -3,3 +3,15 @@
   email = n.nakane0219@gmail.com
 [init]
   defaultBranch = main
+[fetch]
+  prune = true
+[pull]
+  rebase = false
+[push]
+  default = current
+[alias]
+  st = status
+  sw = switch
+  swc = switch -c
+[ghq]
+  root = ~/dev/src
