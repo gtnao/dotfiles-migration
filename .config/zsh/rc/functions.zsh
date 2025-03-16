@@ -86,6 +86,13 @@ function is_mac() {
 		return 1
 	fi
 }
+function install_cmake() {
+	if is_mac; then
+		brew install cmake
+	else
+		sudo apt -y install cmake
+	fi
+}
 function install_docker() {
 	if is_mac; then
 		brew install --cask docker

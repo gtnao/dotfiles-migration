@@ -295,6 +295,9 @@ require("lazy").setup({
 					table.insert(ensure_installed, "pyright")
 					table.insert(ensure_installed, "ts_ls")
 				end
+				if vim.fn.executable("python3") == 1 then
+					table.insert(ensure_installed, "cmake")
+				end
 				mason_lspconfig.setup({
 					ensure_installed = ensure_installed,
 					automatic_installation = true,
@@ -421,11 +424,13 @@ require("lazy").setup({
 				local null_ls = require("null-ls")
 				local ensure_installed = {
 					"asmfmt",
+					"checkmake",
 					"shfmt",
 					"stylua",
 				}
 				local sources = {
 					null_ls.builtins.formatting.asmfmt,
+					null_ls.builtins.diagnostics.checkmake,
 					null_ls.builtins.formatting.shfmt.with({
 						filetypes = { "sh", "zsh" },
 					}),
