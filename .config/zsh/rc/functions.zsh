@@ -19,8 +19,9 @@ function install_ruby_dependencies() {
 function install_python() {
 	asdf plugin add python
 	install_python_dependencies
-	asdf install python latest
-	asdf set -u python latest
+	# failed to install poetry with python latest
+	asdf install python 3.13.1
+	asdf set -u python 3.13.1
 }
 function install_python_dependencies() {
 	if is_mac; then
@@ -28,6 +29,10 @@ function install_python_dependencies() {
 	else
 		sudo apt -y install build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev curl git libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
 	fi
+}
+function install_poetry() {
+	curl -sSL https://install.python-poetry.org | python3 -
+	"${HOME}/.local/bin/poetry" config virtualenvs.in-project true
 }
 function install_rust() {
 	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path
@@ -37,11 +42,9 @@ function install_sdkman() {
 	source "${HOME}/.sdkman/bin/sdkman-init.sh"
 }
 function install_java() {
-	install_sdkman
 	sdk install java
 }
 function install_gradle() {
-	install_sdkman
 	sdk install gradle
 }
 function install_go() {
@@ -59,24 +62,6 @@ function install_go() {
 	sudo rm -rf /usr/local/go
 	sudo tar -C /usr/local -xzf /tmp/${file}
 	rm /tmp/${file}
-}
-function install_docker() {
-	if is_mac; then
-		brew install --cask docker
-	else
-		# https://docs.docker.com/engine/install/ubuntu/
-		sudo apt-get update
-		sudo apt-get install ca-certificates curl
-		sudo install -m 0755 -d /etc/apt/keyrings
-		sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
-		sudo chmod a+r /etc/apt/keyrings/docker.asc
-		echo \
-			"deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
-      $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}") stable" |
-			sudo tee /etc/apt/sources.list.d/docker.list >/dev/null
-		sudo apt-get update
-		sudo apt-get -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-	fi
 }
 function get_goos() {
 	local os
@@ -100,4 +85,32 @@ function is_mac() {
 	else
 		return 1
 	fi
+}
+function install_docker() {
+	if is_mac; then
+		brew install --cask docker
+	else
+		# https://docs.docker.com/engine/install/ubuntu/
+		sudo apt-get update
+		sudo apt-get install ca-certificates curl
+		sudo install -m 0755 -d /etc/apt/keyrings
+		sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+		sudo chmod a+r /etc/apt/keyrings/docker.asc
+		echo \
+			"deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+      $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}") stable" |
+			sudo tee /etc/apt/sources.list.d/docker.list >/dev/null
+		sudo apt-get update
+		sudo apt-get -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+	fi
+}
+function install_terraform() {
+	asdf plugin add terraform https://github.com/asdf-community/asdf-hashicorp.git
+	asdf install terraform latest
+	asdf set -u terraform latest
+}
+function install_awscli() {
+	asdf plugin add awscli
+	asdf install awscli latest
+	asdf set -u awscli latest
 }

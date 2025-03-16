@@ -1,6 +1,6 @@
 # path
 typeset -Ugx path
-path=($HOME/.asdf/shims(N-/) $path)
+path=($HOME/.local/bin(N-/) $HOME/.asdf/shims(N-/) $path)
 
 HISTFILE=~/.zsh_history
 HISTSIZE=10000
@@ -14,6 +14,23 @@ setopt HIST_FIND_NO_DUPS
 setopt HIST_SAVE_NO_DUPS
 setopt HIST_REDUCE_BLANKS
 setopt EXTENDED_HISTORY
+
+# key bindings
+bindkey -e
+
+function _fzf-ghq() {
+  local selected_dir=$(ghq list -p | fzf)
+  if [ -n "${selected_dir}" ]; then
+    BUFFER="cd ${selected_dir}"
+    zle accept-line
+  fi
+  zle clear-screen
+}
+zle -N _fzf-ghq
+bindkey '^]' _fzf-ghq
+
+# completion
+zstyle ':completion:*' menu select=2
 
 # zinit
 # https://github.com/zdharma-continuum/zinit?tab=readme-ov-file#manual
