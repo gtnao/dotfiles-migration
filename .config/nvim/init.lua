@@ -278,6 +278,9 @@ require("lazy").setup({
 					"rust_analyzer",
 					"terraformls",
 				}
+				if vim.fn.executable("cargo") == 1 then
+					table.insert(ensure_installed, "asm_lsp")
+				end
 				if vim.fn.executable("gem") == 1 then
 					table.insert(ensure_installed, "solargraph")
 				end
@@ -285,7 +288,10 @@ require("lazy").setup({
 					table.insert(ensure_installed, "gopls")
 				end
 				if vim.fn.executable("npm") == 1 then
+					table.insert(ensure_installed, "cssls")
+					table.insert(ensure_installed, "dockerls")
 					table.insert(ensure_installed, "eslint")
+					table.insert(ensure_installed, "html")
 					table.insert(ensure_installed, "pyright")
 					table.insert(ensure_installed, "ts_ls")
 				end
@@ -309,6 +315,26 @@ require("lazy").setup({
 						lspconfig[server_name].setup({
 							capabilities = default_capabilities,
 							on_attach = on_attach,
+						})
+					end,
+					["cssls"] = function()
+						lspconfig.cssls.setup({
+							capabilities = default_capabilities,
+							on_attach = function(client, bufnr)
+								client.server_capabilities.documentFormattingProvider = false
+								client.server_capabilities.documentRangeFormattingProvider = false
+								on_attach(client, bufnr)
+							end,
+						})
+					end,
+					["html"] = function()
+						lspconfig.html.setup({
+							capabilities = default_capabilities,
+							on_attach = function(client, bufnr)
+								client.server_capabilities.documentFormattingProvider = false
+								client.server_capabilities.documentRangeFormattingProvider = false
+								on_attach(client, bufnr)
+							end,
 						})
 					end,
 					["jdtls"] = function()
@@ -394,10 +420,12 @@ require("lazy").setup({
 				local mason_null_ls = require("mason-null-ls")
 				local null_ls = require("null-ls")
 				local ensure_installed = {
+					"asmfmt",
 					"shfmt",
 					"stylua",
 				}
 				local sources = {
+					null_ls.builtins.formatting.asmfmt,
 					null_ls.builtins.formatting.shfmt.with({
 						filetypes = { "sh", "zsh" },
 					}),
@@ -503,6 +531,7 @@ require("lazy").setup({
 				local configs = require("nvim-treesitter.configs")
 				configs.setup({
 					ensure_installed = {
+						"asm",
 						"bash",
 						"c",
 						"cmake",
