@@ -273,16 +273,21 @@ require("lazy").setup({
 				local mason_lspconfig = require("mason-lspconfig")
 				local lspconfig = require("lspconfig")
 				local ensure_installed = {
+					"jdtls",
 					"lua_ls",
 					"rust_analyzer",
 					"terraformls",
 				}
-				if vim.fn.executable("npm") == 1 then
-					table.insert(ensure_installed, "eslint")
-					table.insert(ensure_installed, "ts_ls")
+				if vim.fn.executable("gem") == 1 then
+					table.insert(ensure_installed, "solargraph")
 				end
 				if vim.fn.executable("go") == 1 then
 					table.insert(ensure_installed, "gopls")
+				end
+				if vim.fn.executable("npm") == 1 then
+					table.insert(ensure_installed, "eslint")
+					table.insert(ensure_installed, "pyright")
+					table.insert(ensure_installed, "ts_ls")
 				end
 				mason_lspconfig.setup({
 					ensure_installed = ensure_installed,
@@ -306,6 +311,9 @@ require("lazy").setup({
 							on_attach = on_attach,
 						})
 					end,
+					["jdtls"] = function()
+						return true
+					end,
 					["lua_ls"] = function()
 						lspconfig.lua_ls.setup({
 							capabilities = default_capabilities,
@@ -318,6 +326,21 @@ require("lazy").setup({
 								Lua = {
 									diagnostics = {
 										globals = { "vim" },
+									},
+								},
+							},
+						})
+					end,
+					["pyright"] = function()
+						lspconfig.pyright.setup({
+							capabilities = default_capabilities,
+							on_attach = on_attach,
+							settings = {
+								python = {
+									venvPath = ".",
+									pythonPath = "./.venv/bin/python",
+									analysis = {
+										extraPaths = { "." },
 									},
 								},
 							},
@@ -362,6 +385,7 @@ require("lazy").setup({
 					"nvimtools/none-ls.nvim",
 					dependencies = {
 						"nvim-lua/plenary.nvim",
+						"nvimtools/none-ls-extras.nvim",
 					},
 				},
 			},
@@ -382,6 +406,14 @@ require("lazy").setup({
 				if vim.fn.executable("npm") == 1 then
 					table.insert(ensure_installed, "prettier")
 					table.insert(sources, null_ls.builtins.formatting.prettier)
+				end
+				if vim.fn.executable("python3") == 1 then
+					table.insert(ensure_installed, "black")
+					table.insert(ensure_installed, "isort")
+					table.insert(ensure_installed, "flake8")
+					table.insert(sources, null_ls.builtins.formatting.black)
+					table.insert(sources, null_ls.builtins.formatting.isort)
+					table.insert(sources, require("none-ls.diagnostics.flake8"))
 				end
 				mason_null_ls.setup({
 					ensure_installed = ensure_installed,
@@ -433,6 +465,31 @@ require("lazy").setup({
 			event = { "BufReadPre", "BufNewfile" },
 			config = true,
 		},
+		{
+			"mfussenegger/nvim-jdtls",
+			dependencies = {
+				"williamboman/mason-lspconfig.nvim",
+			},
+			ft = { "java" },
+			-- ref: https://github.com/dragove/nvim/blob/b8e548ab397687bfc0d8528f900f91212ec03651/lua/plugins/jdtls.lua
+			config = function()
+				local install_path = require("mason-registry").get_package("jdtls"):get_install_path()
+				local default_capabilities = require("cmp_nvim_lsp").default_capabilities()
+				local config = {
+					cmd = { install_path .. "/bin/jdtls" },
+					capabilities = default_capabilities,
+					root_dir = vim.fs.dirname(
+						vim.fs.find({ ".gradlew", ".git", "mvnw", "pom.xml", "build.gradle" }, { upward = true })[1]
+					),
+				}
+				vim.api.nvim_create_autocmd("FileType", {
+					pattern = "java",
+					callback = function()
+						require("jdtls").start_or_attach(config)
+					end,
+				})
+			end,
+		},
 		-- Treesitter
 		{
 			"nvim-treesitter/nvim-treesitter",
@@ -458,6 +515,7 @@ require("lazy").setup({
 						"go",
 						"gomod",
 						"graphql",
+						"groovy",
 						"html",
 						"java",
 						"json",
